@@ -43,27 +43,27 @@ COLORS = [[0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
 # Define Streamlit configuration options
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-# Define the base64 image background function
-@st.cache_data()
+@st.cache(allow_output_mutation=True)
 def get_base64_of_bin_file(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
-# Set page background with an image
 def set_png_as_page_bg(png_file):
     bin_str = get_base64_of_bin_file(png_file)
-    page_bg_img = f'''
+    page_bg_img = '''
     <style>
-    .stApp {{
-    background-image: url("data:image/png;base64,{bin_str}");
+    .stApp {
+    background-image: url("data:image/png;base64,%s");
     background-size: cover;
-    }}
+    }
     </style>
-    '''
-    st.markdown(page_bg_img, unsafe_allow_html=True)
+    ''' % bin_str
 
-set_png_as_page_bg("background.jpeg")
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+    return
+
+set_png_as_page_bg('background.jpeg')
 
 # Define image preprocessing transform
 transform = T.Compose([
