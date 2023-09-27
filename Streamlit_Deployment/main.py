@@ -12,9 +12,9 @@ from copy import deepcopy
 import matplotlib.pyplot as plt
 import torchvision.transforms as T
 torch.set_grad_enabled(False);
-from detectron2.config import get_cfg
-from detectron2.data import MetadataCatalog
-from detectron2.utils.visualizer import Visualizer
+# from detectron2.config import get_cfg
+# from detectron2.data import MetadataCatalog
+# from detectron2.utils.visualizer import Visualizer
 
 palette = itertools.cycle(sns.color_palette())
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -251,20 +251,20 @@ def main():
                 panoptic_seg = torch.from_numpy(rgb2id(panoptic_seg))
 
                 # Detectron2 uses a different numbering of coco classes, here we convert the class ids accordingly
-                meta = MetadataCatalog.get("coco_2017_val_panoptic_separated")
-                for i in range(len(segments_info)):
-                    c = segments_info[i]["category_id"]
-                    segments_info[i]["category_id"] = meta.thing_dataset_id_to_contiguous_id[c] if segments_info[i]["isthing"] else meta.stuff_dataset_id_to_contiguous_id[c]
+                # meta = MetadataCatalog.get("coco_2017_val_panoptic_separated")
+                # for i in range(len(segments_info)):
+                #     c = segments_info[i]["category_id"]
+                #     segments_info[i]["category_id"] = meta.thing_dataset_id_to_contiguous_id[c] if segments_info[i]["isthing"] else meta.stuff_dataset_id_to_contiguous_id[c]
 
-                # Finally we visualize the prediction
-                v = Visualizer(np.array(image.copy().resize((final_w, final_h)))[:, :, ::-1], meta, scale=1.0)
-                v._default_font_size = 20
-                v = v.draw_panoptic_seg_predictions(panoptic_seg, segments_info, area_threshold=0)
+                # # Finally we visualize the prediction
+                # v = Visualizer(np.array(image.copy().resize((final_w, final_h)))[:, :, ::-1], meta, scale=1.0)
+                # v._default_font_size = 20
+                # v = v.draw_panoptic_seg_predictions(panoptic_seg, segments_info, area_threshold=0)
 
-                st.subheader("Panoptic Segmentation with Labels using Detectron2")
+                # st.subheader("Panoptic Segmentation with Labels using Detectron2")
 
-                # Display the image using Streamlit
-                st.image(v.get_image(), caption='Panoptic Detection with Class Labels', use_column_width=True)
+                # # Display the image using Streamlit
+                # st.image(v.get_image(), caption='Panoptic Detection with Class Labels', use_column_width=True)
         else:
             # Display the error message to the user
             st.error("Error: " + error_message)
