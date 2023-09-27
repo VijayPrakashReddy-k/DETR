@@ -44,6 +44,7 @@ COLORS = [[0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # Define the base64 image background function
+@st.cache_data()
 def get_base64_of_bin_file(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
