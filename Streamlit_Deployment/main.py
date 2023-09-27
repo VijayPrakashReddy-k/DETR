@@ -181,75 +181,75 @@ def main():
             st.pyplot(plot_results(image, scores, bboxes))
 
             # Create a button to load the Panoptic DETR model
-            if st.button("Panoptic Segmentation"):
+            # if st.button("Panoptic Segmentation"):
 
-                st.write("Loading Panoptic DETR model...")
+            #     st.write("Loading Panoptic DETR model...")
 
-                model, postprocessor = panoptic_load_model()
+            #     model, postprocessor = panoptic_load_model()
 
-                # mean-std normalize the input image (batch-size: 1)
-                img = transform(image).unsqueeze(0)
+            #     # mean-std normalize the input image (batch-size: 1)
+            #     img = transform(image).unsqueeze(0)
 
-                # Perform inference
-                outputs = model(img)
-                scores = outputs["pred_logits"].softmax(-1)[..., :-1].max(-1)[0]
-                keep = scores > 0.85
+            #     # Perform inference
+            #     outputs = model(img)
+            #     scores = outputs["pred_logits"].softmax(-1)[..., :-1].max(-1)[0]
+            #     keep = scores > 0.85
 
-                # Define the number of columns for displaying masks
-                ncols = 5
+            #     # Define the number of columns for displaying masks
+            #     ncols = 5
 
-                # Calculate the number of rows required based on the number of masks
-                num_masks = keep.sum().item()
-                num_rows = math.ceil(num_masks / ncols)
+            #     # Calculate the number of rows required based on the number of masks
+            #     num_masks = keep.sum().item()
+            #     num_rows = math.ceil(num_masks / ncols)
 
-                # Define a title for the plot
-                st.subheader("High Confidence Masks")
+            #     # Define a title for the plot
+            #     st.subheader("High Confidence Masks")
 
-                # Iterate over the masks and display them
-                for i, mask in enumerate(outputs["pred_masks"][keep]):
-                    plt.subplot(num_rows, ncols, i + 1)
-                    plt.imshow(mask.cpu().numpy(), cmap="cividis")
-                    plt.axis('off')
+            #     # Iterate over the masks and display them
+            #     for i, mask in enumerate(outputs["pred_masks"][keep]):
+            #         plt.subplot(num_rows, ncols, i + 1)
+            #         plt.imshow(mask.cpu().numpy(), cmap="cividis")
+            #         plt.axis('off')
 
-                # Show the plot using Streamlit
-                st.pyplot()
+            #     # Show the plot using Streamlit
+            #     st.pyplot()
 
-                # Post-process the results
-                result = postprocessor(outputs, torch.as_tensor(img.shape[-2:]).unsqueeze(0))[0]
+            #     # Post-process the results
+            #     result = postprocessor(outputs, torch.as_tensor(img.shape[-2:]).unsqueeze(0))[0]
 
-                # Decode the segmentation and color each mask individually
-                panoptic_seg = Image.open(io.BytesIO(result['png_string']))
-                panoptic_seg = np.array(panoptic_seg, dtype=np.uint8).copy()
+            #     # Decode the segmentation and color each mask individually
+            #     panoptic_seg = Image.open(io.BytesIO(result['png_string']))
+            #     panoptic_seg = np.array(panoptic_seg, dtype=np.uint8).copy()
 
-                def rgb2id(color):
-                    if isinstance(color, np.ndarray) and len(color.shape) == 3:
-                        if color.dtype == np.uint8:
-                            color = color.astype(np.int32)
-                        return color[:, :, 0] + 256 * color[:, :, 1] + 256 * 256 * color[:, :, 2]
-                    return int(color[0] + 256 * color[1] + 256 * 256 * color[2])
+            #     def rgb2id(color):
+            #         if isinstance(color, np.ndarray) and len(color.shape) == 3:
+            #             if color.dtype == np.uint8:
+            #                 color = color.astype(np.int32)
+            #             return color[:, :, 0] + 256 * color[:, :, 1] + 256 * 256 * color[:, :, 2]
+            #         return int(color[0] + 256 * color[1] + 256 * 256 * color[2])
 
-                # We retrieve the ids corresponding to each mask
-                panoptic_seg_id = rgb2id(panoptic_seg)
+            #     # We retrieve the ids corresponding to each mask
+            #     panoptic_seg_id = rgb2id(panoptic_seg)
 
-                # Finally, we color each mask individually
-                panoptic_seg[:, :, :] = 0
-                for id in range(panoptic_seg_id.max() + 1):
-                    panoptic_seg[panoptic_seg_id == id] = np.asarray(next(palette)) * 255
+            #     # Finally, we color each mask individually
+            #     panoptic_seg[:, :, :] = 0
+            #     for id in range(panoptic_seg_id.max() + 1):
+            #         panoptic_seg[panoptic_seg_id == id] = np.asarray(next(palette)) * 255
 
-                st.subheader("Panoptic Segmentation")
+            #     st.subheader("Panoptic Segmentation")
 
-                # Display the segmented image using Streamlit
-                st.image(panoptic_seg, caption='Panoptic Segmentation Result', use_column_width=True)
+            #     # Display the segmented image using Streamlit
+            #     st.image(panoptic_seg, caption='Panoptic Segmentation Result', use_column_width=True)
 
-                # We extract the segments info and the panoptic result from DETR's prediction
-                segments_info = deepcopy(result["segments_info"])       
+            #     # We extract the segments info and the panoptic result from DETR's prediction
+            #     segments_info = deepcopy(result["segments_info"])       
 
-                # Panoptic predictions are stored in a special format png
-                panoptic_seg = Image.open(io.BytesIO(result['png_string']))
-                final_w, final_h = panoptic_seg.size
-                # We convert the png into an segment id map
-                panoptic_seg = np.array(panoptic_seg, dtype=np.uint8)
-                panoptic_seg = torch.from_numpy(rgb2id(panoptic_seg))
+            #     # Panoptic predictions are stored in a special format png
+            #     panoptic_seg = Image.open(io.BytesIO(result['png_string']))
+            #     final_w, final_h = panoptic_seg.size
+            #     # We convert the png into an segment id map
+            #     panoptic_seg = np.array(panoptic_seg, dtype=np.uint8)
+            #     panoptic_seg = torch.from_numpy(rgb2id(panoptic_seg))
 
                 # Detectron2 uses a different numbering of coco classes, here we convert the class ids accordingly
                 # meta = MetadataCatalog.get("coco_2017_val_panoptic_separated")
