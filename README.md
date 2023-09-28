@@ -18,6 +18,8 @@
 - [Core Concepts](./README.md/#TERMS)
 - [Critical Takeaways](./README.md/#POINTS)
 - [Assignment](./README.md/#Assignment)
+- [DEMO](./README.md/#demo)
+
 
 <h1 align = 'center',id = "DETR"> 🤗 DETR - Detection Transformer</h1>
 
@@ -98,3 +100,8 @@ DETR can be generalized to produce panoptic segmentation in a unified manner.
 <p align = 'center'>
             <img src = "Class_Materials/DETR-Assignment.jpg" />
 </p>
+
+<h1 id = "demo">✍️ DEMO </h1>
+
+https://github.com/VijayPrakashReddy-k/DETR/assets/42317258/599ecf00-04f2-4a40-9fc0-04c63d7f7b4f
+
