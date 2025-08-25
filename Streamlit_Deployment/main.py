@@ -112,14 +112,43 @@ def rescale_bboxes(out_bbox: torch.Tensor, size) -> torch.Tensor:
     return box_cxcywh_to_xyxy(out_bbox) * scale
 
 # ---- drawing helpers ----
-def draw_boxes_matplotlib(pil_img: Image.Image, boxes, labels, scores, color_cycle=COLORS, title=None):
+# def draw_boxes_matplotlib(pil_img: Image.Image, boxes, labels, scores, color_cycle=COLORS, title=None):
+#     fig, ax = plt.subplots(figsize=(12, 8))
+#     ax.imshow(pil_img)
+#     for (xmin, ymin, xmax, ymax), name, sc, c in zip(boxes, labels, scores, color_cycle * 100):
+#         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
+#                                    fill=False, color=c, linewidth=2.5))
+#         ax.text(xmin, ymin, f"{name}: {sc:.2f}", fontsize=13,
+#                 bbox=dict(facecolor="yellow", alpha=0.5))
+#     ax.axis("off")
+#     if title:
+#         ax.set_title(title)
+#     fig.tight_layout(pad=0.0)
+#     return fig
+
+def draw_boxes_matplotlib(pil_img, boxes, labels, scores, color_cycle=None, title=None):
+    # local default palette if none is provided
+    if color_cycle is None:
+        color_cycle = [
+            (0.000, 0.447, 0.741),
+            (0.850, 0.325, 0.098),
+            (0.929, 0.694, 0.125),
+            (0.494, 0.184, 0.556),
+            (0.466, 0.674, 0.188),
+            (0.301, 0.745, 0.933),
+        ]
+
     fig, ax = plt.subplots(figsize=(12, 8))
     ax.imshow(pil_img)
-    for (xmin, ymin, xmax, ymax), name, sc, c in zip(boxes, labels, scores, color_cycle * 100):
+
+    # repeat colors to cover all boxes
+    colors = color_cycle * 100
+    for (xmin, ymin, xmax, ymax), name, sc, c in zip(boxes, labels, scores, colors):
         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
                                    fill=False, color=c, linewidth=2.5))
         ax.text(xmin, ymin, f"{name}: {sc:.2f}", fontsize=13,
                 bbox=dict(facecolor="yellow", alpha=0.5))
+
     ax.axis("off")
     if title:
         ax.set_title(title)
