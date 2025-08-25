@@ -1,16 +1,3 @@
-# bootstrap_detectron2.py (put inline at the very top of your entrypoint)
-try:
-    import detectron2  # noqa: F401
-except Exception:
-    import os, sys, subprocess
-    os.environ.setdefault("FORCE_CUDA", "0")      # ensure CPU build
-    os.environ.setdefault("MAX_JOBS", "1")        # avoid OOM during compile
-    subprocess.check_call([
-        sys.executable, "-m", "pip", "install", "--no-build-isolation",
-        "git+https://github.com/facebookresearch/detectron2.git@v0.6"
-    ])
-    import detectron2  # noqa: F401
-
 import io
 import math
 import torch
