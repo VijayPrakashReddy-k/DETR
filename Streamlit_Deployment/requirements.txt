@@ -13,7 +13,7 @@ opencv-python>=4.8
 pycocotools>=2.0.7 ; platform_system != "Windows"
 
 # If your logs show the req file at /mount/src/DETR/Streamlit_Deployment/requirements.txt:
-detectron2 @ file:///mount/src/DETR/Streamlit_Deployment/wheels/detectron2-0.6-cp39-cp39-linux_x86_64.whl
+detectron2 @ file:///mount/src/detr/Streamlit_Deployment/wheels/detectron2-0.6-cp39-cp39-linux_x86_64.whl
 
 # Detectron2 wheel: use a DIRECT file URL (avoids 403 on index pages)
 #detectron2 @ https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.13/detectron2-0.6-cp39-cp39-linux_x86_64.whl
