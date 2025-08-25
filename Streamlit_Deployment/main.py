@@ -194,7 +194,7 @@ def main():
             st.pyplot(plot_results(image, scores, bboxes))
 
             ## Comment from here - start
-            Create a button to load the Panoptic DETR model
+            # Create a button to load the Panoptic DETR model
             if st.button("Panoptic Segmentation"):
 
                 st.write("Loading Panoptic DETR model...")
