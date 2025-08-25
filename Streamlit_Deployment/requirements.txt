@@ -9,11 +9,11 @@ streamlit==1.20.0
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==1.13.1
 torchvision==0.14.1
-
 opencv-python>=4.8
 pycocotools>=2.0.7 ; platform_system != "Windows"
 
-detectron2 @ ./wheels/detectron2-0.6-cp39-cp39-linux_x86_64.whl
+# If your logs show the req file at /mount/src/DETR/Streamlit_Deployment/requirements.txt:
+detectron2 @ file:///mount/src/DETR/Streamlit_Deployment/wheels/detectron2-0.6-cp39-cp39-linux_x86_64.whl
 
 # Detectron2 wheel: use a DIRECT file URL (avoids 403 on index pages)
 #detectron2 @ https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.13/detectron2-0.6-cp39-cp39-linux_x86_64.whl
