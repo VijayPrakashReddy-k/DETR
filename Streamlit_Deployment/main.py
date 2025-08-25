@@ -265,7 +265,7 @@ def main():
                 panoptic_seg = np.array(panoptic_seg, dtype=np.uint8)
                 panoptic_seg = torch.from_numpy(rgb2id(panoptic_seg))
 
-                Detectron2 uses a different numbering of coco classes, here we convert the class ids accordingly
+                # Detectron2 uses a different numbering of coco classes, here we convert the class ids accordingly
                 meta = MetadataCatalog.get("coco_2017_val_panoptic_separated")
                 for i in range(len(segments_info)):
                     c = segments_info[i]["category_id"]
