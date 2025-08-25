@@ -1,21 +1,24 @@
-matplotlib==3.6.2
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Torch stack pinned for Detectron2 0.6
+torch==1.13.1
+torchvision==0.14.1
+
+# Keep NumPy 1.x (works with tv==0.14.1)
 numpy==1.23.4
+
+# Your other pins (compatible with NumPy 1.x)
 pandas==1.5.3
+matplotlib==3.6.2
 seaborn==0.11.2
 Pillow==9.4.0
 streamlit==1.20.0
-
-# PyTorch CPU wheels first
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==1.13.1
-torchvision==0.14.1
-# opencv-python>=4.8
 pycocotools>=2.0.7 ; platform_system != "Windows"
 
-# Use headless OpenCV on Linux containers
-opencv-python-headless==4.12.0.88
+## Use headless OpenCV on Linux containers and ⬇️ Critical change: use a pre-2.0 NumPy OpenCV build
+opencv-python-headless==4.8.1.78
 
-# If your logs show the req file at /mount/src/DETR/Streamlit_Deployment/requirements.txt:
+# Vendored Detectron2 wheel (keep the LOWERCASE path)
 detectron2 @ file:///mount/src/detr/Streamlit_Deployment/wheels/detectron2-0.6-cp39-cp39-linux_x86_64.whl
 
 # Detectron2 wheel: use a DIRECT file URL (avoids 403 on index pages)
